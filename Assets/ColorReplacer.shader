@@ -1,10 +1,10 @@
-﻿Shader "Unlit/Hue Replacer"
+﻿Shader "Unlit/Color Replacer"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _SrcHueColor ("Source Hue", Color) = (1.0, 0.0, 1.0)
-        _DestHueColor ("Destination Hue", Color) = (0.0, 1.0, 0.0)
+        _SrcColor ("Source Color", Color) = (1.0, 0.0, 1.0)
+        _DestColor ("Destination Color", Color) = (0.0, 1.0, 0.0)
         _HueThreshold ("Hue Threshold", Float) = 0.1
     }
     SubShader
@@ -61,27 +61,27 @@
 
             // texture we will sample
             sampler2D _MainTex;
-            fixed4 _SrcHueColor;
-            fixed4 _DestHueColor;
+            fixed3 _SrcColor;
+            fixed3 _DestColor;
             fixed _HueThreshold;
 
             // pixel shader; returns low precision ("fixed4" type)
             // color ("SV_Target" semantic)
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed3 rgb = (fixed3)(tex2D(_MainTex, i.uv));
-                fixed3 hsv = rgb2hsv(rgb);
+                fixed3 thisRGB = (fixed3)(tex2D(_MainTex, i.uv));
+                fixed3 thisHSV = rgb2hsv(thisRGB);
 
-                fixed srcHue = rgb2hsv(_SrcHueColor).x;
-                fixed hueDiff = abs(hsv.x - srcHue);
+                fixed3 srcHSV = rgb2hsv(_SrcColor);
+                fixed hueDiff = abs(thisHSV.x - srcHSV.x);
 
                 if (hueDiff < _HueThreshold) {
-                    fixed destHue = rgb2hsv(_DestHueColor).x;
-                    fixed3 destRGB = hsv2rgb(fixed3(destHue, hsv.y, hsv.z));
-                    rgb = lerp(destRGB, rgb, hueDiff / _HueThreshold);
+                    fixed3 destHSV = rgb2hsv(_DestColor);
+                    fixed3 destRGB = hsv2rgb(fixed3(destHSV.x, destHSV.y, thisHSV.z));
+                    thisRGB = lerp(destRGB, thisRGB, hueDiff / _HueThreshold);
                 }
 
-                return fixed4(rgb, 1);
+                return fixed4(thisRGB, 1);
             }
             ENDCG
         }

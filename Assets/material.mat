@@ -79,8 +79,6 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DestHue: {r: 1, g: 0.7666667, b: 0, a: 1}
-    - _DestHueColor: {r: 0, g: 1, b: 0.13692284, a: 1}
+    - _DestColor: {r: 0.5, g: 1, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SrcHue: {r: 1, g: 0, b: 1, a: 1}
-    - _SrcHueColor: {r: 1, g: 0, b: 1, a: 1}
+    - _SrcColor: {r: 1, g: 0, b: 1, a: 1}
