@@ -14,9 +14,19 @@ public class ColorReplacerScript : MonoBehaviour
     }
 
     void Update() {
-        mat.SetColor("_DestColor", Color.HSVToRGB(
+        Color destColor = Color.HSVToRGB(
             Time.time * hueSpeed % 1,
             1 - Mathf.PingPong(Time.time * satSpeed, 1),
-            1));
+            1);
+
+        ChangeDestColor(destColor);
+    }
+
+    public void ChangeSrcColor(Color srcColor) {
+        mat.SetColor("_SrcColor", srcColor);
+    }
+
+    public void ChangeDestColor(Color destColor) {
+        mat.SetColor("_DestColor", destColor);
     }
 }
